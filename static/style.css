@@ -1,18 +1,17 @@
-/* Existing styles */
 body {
     font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #2c3e50, #4ca1af);
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    display: flex; /* Use flexbox for vertical centering */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Make the body take up the full viewport height */
     color: #fff;
 }
 
-.container {
-    background-color: rgba(44, 62, 80, 0.9);
+.dark-blue-box {
+    background-color: rgba(44, 62, 80, 0.9); /* Dark blue color with transparency */
     padding: 40px;
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
@@ -137,7 +136,7 @@ p {
 
 /* Media Queries for Responsive Design */
 @media (max-width: 768px) {
-    .container {
+    .dark-blue-box {
         padding: 30px;
     }
 
@@ -168,7 +167,7 @@ p {
 }
 
 @media (max-width: 480px) {
-    .container {
+    .dark-blue-box {
         padding: 20px;
     }
 
@@ -203,4 +202,25 @@ p {
     text-align: center;
     font-size: 18px;
     color: #fff;
+}
+
+.analyze-another-button {
+    background: linear-gradient(135deg, #3498db, #2980b9); /* Match the gradient */
+    color: #fff;
+    border: none;
+    padding: 15px 30px; /* Match padding */
+    border-radius: 10px; /* Match border radius */
+    cursor: pointer;
+    font-size: 16px; /* Match font size */
+    font-weight: 500; /* Match font weight */
+    text-decoration: none; /* Remove underline */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block; /* Make it behave like a block element */
+    margin-top: 20px; /* Add some space */
+}
+
+.analyze-another-button:hover {
+    background: linear-gradient(135deg, #2980b9, #1c598a); /* Darker gradient on hover */
+    transform: translateY(-2px); /* Subtle lift on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
