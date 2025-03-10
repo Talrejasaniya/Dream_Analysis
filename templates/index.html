@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dream Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Dream Analyzer</h1>
+    <div>
+        <form action="/analyze-dream" method="post">
+            <label for="dream_description">Describe your dream:</label><br>
+            <textarea id="dream_description" name="dream_description" rows="4" cols="50" placeholder="Enter your dream here..."></textarea><br>
+            <input type="submit" value="Analyze Dream">
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if analysis %}
+            <h2>Analysis:</h2>
+            <div class="analysis-output"> <div>
+                {{ analysis|safe }}
+            </div>
+        {% endif %}
+        <div id="loading" style="display: none;">Loading...</div> <div>
+    </div>
+    <script>
+        // Add this script for the loading indicator
+        const form = document.querySelector('form');
+        const loading = document.getElementById('loading');
+
+        form.addEventListener('submit', () => {
+            loading.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
