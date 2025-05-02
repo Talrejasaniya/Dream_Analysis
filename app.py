@@ -8,7 +8,7 @@ import markdown
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 @app.route('/')
 def index():
@@ -27,8 +27,11 @@ def analyze_dream():
     # Check for non-dream input
     non_dream_keywords = ["hii", "hello", "how are you"]
     if any(keyword in dream_description.lower() for keyword in non_dream_keywords):
-        return render_template('index.html', error="Please enter a dream. I only analyze dreams.")
+      return render_template('index.html', error="I only analyze dreams. Please describe a dream for analysis.")
 
+   
+    
+    
     client = genai.Client(api_key=api_key)
     model = "gemini-2.0-flash-lite"
     contents = [
@@ -49,7 +52,7 @@ def analyze_dream():
             ),
             types.SafetySetting(
                 category="HARM_CATEGORY_HATE_SPEECH",
-                threshold="BLOCK_ONLY_HIGH",
+                threshold="BLOCK_NONE",
             ),
             types.SafetySetting(
                 category="HARM_CATEGORY_SEXUALLY_EXPLICIT",
@@ -66,7 +69,7 @@ def analyze_dream():
         ],
         system_instruction=[
             types.Part.from_text(
-                text="You are a dream analysis chatbot. Respond only to prompts describing dreams with a short (2-4 points) interpretation. If the prompt is not a dream description (e.g., an unrelated question, conversation, or unrelated request), respond only with: Please describe a dream for analysis. I only analyze dreams. Do not elaborate, ask follow-up questions, or provide personal opinions. Focus on brief, dream-specific analysis and nothing else."
+                text="You are a dream analysis chatbot. Please analyze any user-described dream, even if it contains violence or conflict. Provide a brief (2-4 point) interpretation focused only on the dream’s meaning."
             ),
         ],
     )
@@ -76,7 +79,12 @@ def analyze_dream():
         model=model, contents=contents, config=generate_content_config
     ):
         response_text += chunk.text
-
+    # 🔍 Debug Logging
+    print("Dream Description:", dream_description)
+    print("Generated Response:", response_text)
+    # 🛑 Fallback if the response is not valid
+    if not response_text or "Please describe a dream for analysis" in response_text:
+      return render_template('index.html', error="Sorry, we couldn't analyze the dream. Please try again with a different description.")
     # Convert Markdown to HTML
     formatted_response = markdown.markdown(response_text)
 
